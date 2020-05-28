@@ -1,0 +1,70 @@
+{
+  "servers": [
+    {
+      "name": "gen2",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27082",
+      "GamePort": "7082"
+    },
+    {
+      "name": "cen2",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27022",
+      "GamePort": "7022"
+    },
+    {
+      "name": "rag2",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27052",
+      "GamePort": "7052"
+    },
+    {
+      "name": "val1",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27070",
+      "GamePort": "7070"
+    },
+    {
+      "name": "cen1",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27020",
+      "GamePort": "7020"
+    },
+    {
+      "name": "gen1",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27080",
+      "GamePort": "7080"
+    },
+    {
+      "name": "abe2",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27012",
+      "GamePort": "7012"
+    },
+    {
+      "name": "abe1",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27010",
+      "GamePort": "7010"
+    },
+    {
+      "name": "isl2",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27042",
+      "GamePort": "7042"
+    },
+    {
+      "name": "ext1",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27030",
+      "GamePort": "7030"
+    },
+    {
+      "name": "rag1",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27050",
+      "GamePort": "7050"
+    }
+  ]
+}

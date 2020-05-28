@@ -1,0 +1,126 @@
+{
+ "enemy": [
+  {
+   "name": "snacha",
+   "steamID": "76561198134416236"
+  },
+  {
+   "name": "pegass",
+   "steamID": "76561198339232097"
+  },
+  {
+   "name": "galius",
+   "steamID": "76561198344834686"
+  },
+  {
+   "name": "petros",
+   "steamID": "76561198218299007"
+  },
+  {
+   "name": "corgniasek",
+   "steamID": "76561198443186401"
+  },
+  {
+   "name": "nebe",
+   "steamID": "76561198196461023"
+  },
+  {
+   "name": "NEZNÁMÍHRÁČ",
+   "steamID": "76561198157269726"
+  },
+  {
+   "name": "jandys",
+   "steamID": "76561198305089762"
+  },
+  {
+   "name": "Bruce",
+   "steamID": "76561198305249518"
+  }
+ ],
+ "ally": [
+  {
+   "name": "Jenda",
+   "steamID": "76561198056367077"
+  },
+  {
+   "name": "opíčák_CZ",
+   "steamID": "76561198066232822"
+  },
+  {
+   "name": "Esed",
+   "steamID": "76561198012212489"
+  },
+  {
+   "name": "Barry",
+   "steamID": "76561198168965489"
+  },
+  {
+   "name": "Annabell",
+   "steamID": "76561199020728576"
+  },
+  {
+   "name": "Nist",
+   "steamID": "76561198068315509"
+  },
+  {
+   "name": "Klidas",
+   "steamID": "76561198242750352"
+  },
+  {
+   "name": "Storm",
+   "steamID": "76561198142620311"
+  },
+  {
+   "name": "Lion",
+   "steamID": "76561198847086436"
+  },
+  {
+   "name": "Hardy",
+   "steamID": "76561198005177937"
+  },
+  {
+   "name": "RadaDa",
+   "steamID": "76561198196669526"
+  },
+  {
+   "name": "Galaxy",
+   "steamID": "76561198316477689"
+  },
+  {
+   "name": "JetLiCZ",
+   "steamID": "76561198301230670"
+  },
+  {
+   "name": "Nemes",
+   "steamID": "76561198130496608"
+  },
+  {
+   "name": "DJN",
+   "steamID": "76561198133522384"
+  },
+  {
+   "name": "opičíkCZ",
+   "steamID": "76561198066232822"
+  },
+  {
+   "name": "Pali",
+   "steamID": "76561198181957789"
+  },
+  {
+   "name": "DDT",
+   "steamID": "76561198017493573"
+  },
+  {
+   "name": "hanz",
+   "steamID": "76561198109017695"
+  },
+  {
+   "name": "Vitas",
+   "steamID": "76561198071023060"
+  },
+  {
+   "name": "Lili",
+   "steamID": "76561198390025340"
+  }
+ ]
+}
