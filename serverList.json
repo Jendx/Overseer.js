@@ -65,6 +65,12 @@
       "serverIP": "109.105.61.119",
       "QueryPort": "27050",
       "GamePort": "7050"
+    },
+    {
+      "name": "isl1",
+      "serverIP": "109.105.61.119",
+      "QueryPort": "27040",
+      "GamePort": "7040"
     }
   ]
 }
