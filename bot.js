@@ -25,6 +25,7 @@ function sleep(milliseconds) {
 const httpAgent = new http.Agent({
     keepAlive: true
 });
+
 const httpsAgent = new https.Agent({
     keepAlive: true
 });
@@ -73,22 +74,42 @@ function checkSteamID(message, ser, player){        // Kontroluje hráče kde js
 
     
     //console.log
-    }
+}
+
+async function Denie(message)
+{
+    const attachment = new Discord.MessageAttachment('https://media.giphy.com/media/1zlj55brLYCYmJqujn/giphy.gif');
+    await message.channel.send(attachment);
+    await message.channel.send("Kontaktujte Administrátora systému pro použití tohoto příkazu (Jendu)");
+    return;
+}
 
 function ts(message){       //Vypsání všech lidí na sledovaných serverech
     var dataLoad = fs.readFileSync('serverList.json');
     var servery = JSON.parse(dataLoad);
-    
-    if(servery.servers == undefined){
-        message.channel.send("**ERROR** 1st add server before using this command");
+    var hraci = " ";
+    var dataLoad = fs.readFileSync('triggerList.json');
+    var players = JSON.parse(dataLoad);// předělání dat na array
+
+    var obj = players.ally.find(value => value.steamID == message.member.user.tag) // Kontrola
+    if(obj != undefined){
+
+        if(servery.servers == undefined){
+            message.channel.send("**ERROR** 1st add server before using this command");
+            return;
+        } 
+        servery.servers.forEach(ser => {
+            vypis(message,ser,hraci)
+        })
+    }
+    else
+    {
+        Denie(message);
         return;
-    } 
-
-    servery.servers.forEach(ser => {
-        vypis(message,ser)
-    })
-
+    };
+    
 }
+
 
 function server(message, args){     // vypsání populace daného serveru
     if(args[0] == null){
@@ -97,19 +118,39 @@ function server(message, args){     // vypsání populace daného serveru
     var dataLoad = fs.readFileSync('serverList.json');
     var servery = JSON.parse(dataLoad);
     
-    var chosenOne = servery.servers.find(value => value.name == args[0] );
-    if(chosenOne == undefined){
-        message.channel.send("**Server not found** try: *!slist*");
-        return;
-    }
-    
-    vypis(message,chosenOne);
+    var dataLoad = fs.readFileSync('triggerList.json');
+    var players = JSON.parse(dataLoad);// předělání dat na array
 
+    var obj = players.ally.find(value => value.steamID == message.member.user.tag) // Kontrola
+    if(obj != undefined){
+
+        if(servery.servers == undefined){
+            message.channel.send("**ERROR** 1st add server before using this command");
+            return;
+        } 
+        var chosenOne = servery.servers.find(value => value.name == args[0] );
+        
+        if(chosenOne == undefined){
+            message.channel.send("**Server not found** try: *!slist*");
+            return;
+        }
+        
+        vypis(message, chosenOne);
+       
+    }
+    else
+    {
+        Denie(message);
+        return;
+    };
+
+
+    
 }
 
 function vypis(message, ser){  ////////////////////////////////////////// Funkce na vypsání hráčů na serveru
     var lister = " ";
-
+    var hraciSeznam = " ";
     Gamedig.query({
         type: 'arkse',
         host: ser.serverIP,
@@ -120,14 +161,17 @@ function vypis(message, ser){  ////////////////////////////////////////// Funkce
         message.channel.send("\n | **" +state.name  + "** | **("+ state.raw.numplayers + "/" + state.maxplayers + ")** |\n ");
 
         if (state.raw.numplayers == 0) {
-
-            message.channel.send("``` Server is Empty ``` ");
+            
+            hraciSeznam += "``` Server is Empty ``` ";
+            hraciSeznam += ("`>>>` steam://connect/"+ser.serverIP+":"+ser.QueryPort+" `<<<`\n");
+            hraciSeznam += "** **";
+            message.channel.send(hraciSeznam);
         } 
         else {
             state.players.forEach(player =>{
                 
                 if(player.name == undefined){
-                    message.channel.send("```| Joining... | Joining... |``` ");
+                    hraciSeznam += "```| Joining... | Joining... |```";
                 }
                 else{
                     var sec = player.time;
@@ -139,15 +183,18 @@ function vypis(message, ser){  ////////////////////////////////////////// Funkce
                     console.log(sec + hours + minutes + seconds); 
                     
                     checkSteamID(message, ser, player);
-                    message.channel.send("```| " + player.name + " | " + hours +":"+ minutes + ":"+ seconds +" |``` ");
+                    hraciSeznam += ("```| " + player.name + " | " + hours +":"+ minutes + ":"+ seconds +" |```");
                 }
             })
+            hraciSeznam += ("`>>>` steam://connect/"+ser.serverIP+":"+ser.QueryPort+" `<<<`\n");
+            hraciSeznam += "** **";
+            message.channel.send(hraciSeznam);
         }
 
     }).catch((error) => {
         message.channel.send(ser.name+" is offline");
     });
-       
+    
 }
 
 function cae(args, message){         /// Funkce na přidání hráču na seznam hledaných hráčů
@@ -281,28 +328,28 @@ function crs(args, message){         /// odebrání serveru ze seznamu serverů
 
 function caa(args, message){         /// Funkce na přidání hráču na seznam hledaných hráčů
     if(args[0] == null || args[1] == null || args[2] != null){
-        message.channel.send("**Error**, syntax for adding allied players is: *!caa <Player Name> <Player SteamId>* \n**Example:** *!caa JamesBond 007*");
+        message.channel.send("**Error**, syntax for adding allied players is: *!caa <Player Name> <Player DiscordId>* \n**Example:** *!caa JamesBond Bond#007*");
     }
     else{
         var dataLoad = fs.readFileSync('triggerList.json');
-        var ennemies = JSON.parse(dataLoad);// předělání dat na array
+        var players = JSON.parse(dataLoad);// předělání dat na array
         
-        var obj = ennemies.ally.find(value => value.name == args[0] )
+        var obj = players.ally.find(value => value.name == args[0] ) // Vyhledávání v .JSON Pokud ho tam nenajde, přidá ho do listu
         if(obj != undefined){
-            var index = ennemies.ally.findIndex(obj => obj.name == args[0]);
-            ennemies.ally.splice(index,1,{name: args[0], steamID: args[1]});
+            var index = players.ally.findIndex(obj => obj.name == args[0]);    //SteamID = DiscordID
+            players.ally.splice(index,1,{name: args[0], steamID: args[1]});
 
             message.channel.send("| **"+obj.name+"'s player Id was changed**  from: **" + obj.steamID + "** to id: **" + args[1]+ "**");
 
         }
         else{
             message.channel.send("| **Player: "+args[0] + "** | **Player Id: " + args[1]  + "** | was **added to the list** of allied players |");
-            ennemies.ally.push(
+            players.ally.push(
                 {name: args[0], steamID: args[1]}
             );
         }
                 
-         var data = JSON.stringify(ennemies, null,1);
+         var data = JSON.stringify(players, null,1);
 
         fs.writeFile(
             'triggerList.json', 
@@ -364,12 +411,27 @@ function sList(message){         /// výpis serverů
     servery.servers.forEach(ser => {
         message.channel.send("``` | Server: " + ser.name + " server IP: " + ser.serverIP + " Query Port: "+ ser.QueryPort + " Game Port: "+ ser.GamePort + " | \n```");
     })
-    
 
 }
 
+function Help(message){
+    var prikazi = 
+        "```server <nazev> - Vypíše info o serveru``` \n"+ 
+        "```ts - (Track Servers) vypíše všechny servery ```\n"+
+        "```cae <Nepřitel> <SteamID> - Přidání nepřítele```\n"+
+        "```cre <Nepřitel> - odebere nepřítele ze seznamu``` \n" +
+        "```caa <Spojenec> - <DiscordID> - přidá spojence (Člověk co může používat bota)```\n" +
+        "```cra <Spojenec> - odebere spojence (Člověk co může používat bota)```\n" +
+        "```plist - vypsání seznamu hráčů```\n" +
+        "```slist - vypsání seznamu sledovaných serverů```\n"
+    
+    message.channel.send(prikazi);
+    
+}
+
 client.once('ready', () => {
-	console.log('Ready!');
+    console.log('Ready!');
+   
 });
 
 client.on('message', message => {
@@ -397,7 +459,14 @@ client.on('message', message => {
         break;
 
         case ("caa"):   // přidání ally hráču do seznamu
-            caa(args, message);     
+        if(message.member.user.tag == "Jenda#1429") 
+        {
+            caa(args, message);
+        }
+        else 
+        {
+            Denie(message);
+        }
         break;
 
         case ("cra"): // Odstranění ally hráču ze seznamu
@@ -420,10 +489,33 @@ client.on('message', message => {
             sList(message);
         break;
 
-        case ("steam"): // výpis seznamu serverů
-            checkSteamID(message);
+        case("tts"):
+        var zprava = " ";
+        args.forEach(arg => {
+            
+            zprava += arg;
+            zprava += ' ';
+        });
+
+        message.channel.send(zprava, {
+            tts: true
+        });
         break;
-        
+
+        case("ls"):
+        client.guilds.cache.forEach( async guild => {
+            await message.channel.send("``` " + guild.name + " | " + guild.id + " ```");
+            await message.channel.lastMessage.react('🍎')
+        });
+        break;
+        // if(guild.name == DisName)
+        // {
+        //     message.guild.leave(guild.id)
+        // }
+
+        case("help"):
+        Help(message);
+            break;
         // Just add any case commands if you want to.
      }
 });
@@ -431,6 +523,11 @@ client.on('message', message => {
 client.login(token);
 
 
+/* Všechny kanály, kdeje připojen
+client.channels.cache.forEach(channel => {
+            console.log(`${channel.name } | ${channel.id} `)
+        });
+*/
 
 
 /*var Discord = require('discord.io');
